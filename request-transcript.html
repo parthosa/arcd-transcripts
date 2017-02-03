@@ -4,19 +4,21 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title></title>
-	<link rel="stylesheet" href="materialize.min.css">
+	<link rel="stylesheet" href="css/materialize.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> </head>
 
 <body class=" blue lighten-5">
 	<div class="container-wrap">
 		<nav>
-			<div class="nav-wrapper blue darken-1"> <a href="#" class="brand-logo">Transcripts</a>
+			<div class="nav-wrapper blue darken-1"> <a href="profile.html" class="brand-logo">Transcripts</a>
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
 					<li class="tab loggedOut register"><a href="register.html">Register</a></li>
 					<li class="tab loggedOut login"><a href="index.html">Login</a></li>
-					<li class="tab loggedIn logout"><a href="#">Logout</a></li>
-					<li class="tab loggedIn request_transcript"><a href="request-transcript.html">Request Transcript</a></li>
+					<li class="tab loggedIn request_transcript"><a href="profile.html">Profile</a></li>
+					<li class="tab loggedIn request_transcript"><a href="all-transcript.html">View All</a></li>
+					<li class="tab loggedIn request_transcript"><a href="all-transcript.html">Search</a></li>
+					<li class="tab loggedIn logout"><a href="index.html" onclick="window.localStorage.clear()">Logout</a></li>
 
 				</ul>
 			</div>
@@ -29,29 +31,29 @@
 							<div class="card-content"> <span class="card-title">Basic Info</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12">
+										<form class="col s12" id="basic-info-form">
 											<div class="row">
 												<div class="input-field col s6">
-													<input id="phone" type="text" class="validate">
-													<label for="phone">Phone</label>
+													<input name="phone_number" type="text" class="validate">
+													<label for="phone_number">Phone</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="number_of_transcripts" type="text" class="validate">
+													<input name="number_of_transcripts" type="text" class="validate">
 													<label for="number_of_transcripts">Number of Transcripts</label>
 												</div>
 												<div class="input-field col s6 radio">
-													<!-- <input id="sealed_required" type="text" class="validate">
+													<!-- <input name="sealed_required" type="text" class="validate">
 													<label for="sealed_required">Sealed Required</label> -->
 													<p class="radio-label">Sealed Required</p>
 													<p>
-														<input class="with-gap" name="group3" type="radio" id="test5" checked />
-														<label for="test5">Yes</label>
-														<input class="with-gap" name="group3" type="radio" id="test5" checked />
-														<label for="test5">No</label>
+														<input class="with-gap" name="sealed_required" id="sealed_required_true" type="radio" value="True" checked />
+														<label for="sealed_required_true">Yes</label>
+														<input class="with-gap" name="sealed_required" id="sealed_required_false" type="radio" value="False"  />
+														<label for="sealed_required_false">No</label>
 													</p>
 												</div>
 												<div class="input-field col s6">
-													<input id="mailing_mode" type="text" class="validate">
+													<input name="mailing_mode" type="text" class="validate">
 													<label for="mailing_mode">Mailing Mode</label>
 												</div>
 											</div>
@@ -64,38 +66,38 @@
 							<div class="card-content"> <span class="card-title">Mailing Address</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12" id="mailing_address">
+										<form class="col s12" id="mailing-address-form">
 											<div class="row">
 												<div class="input-field col s6">
-													<input id="address_line_one" type="text" class="validate">
+													<input name="address_line_one" type="text" class="validate">
 													<label for="address_line_one">Address Line 1</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_two" type="text" class="validate">
+													<input name="address_line_two" type="text" class="validate">
 													<label for="address_line_two">Address Line 2</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_three" type="text" class="validate">
+													<input name="address_line_three" type="text" class="validate">
 													<label for="address_line_three">Address Line 3</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="landmark" type="text" class="validate">
+													<input name="landmark" type="text" class="validate">
 													<label for="landmark">Landmark</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="city" type="text" class="validate">
+													<input name="city" type="text" class="validate">
 													<label for="city">City</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="state" type="text" class="validate">
+													<input name="state" type="text" class="validate">
 													<label for="state">State</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="country" type="text" class="validate">
+													<input name="country" type="text" class="validate">
 													<label for="country">Country</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="pincode" type="text" class="validate">
+													<input name="pincode" type="text" class="validate">
 													<label for="pincode">Pincode</label>
 												</div>
 											</div>
@@ -108,38 +110,38 @@
 							<div class="card-content"> <span class="card-title">Residential Address</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12" id="residential_address">
+										<form class="col s12" id="residential-address-form">
 											<div class="row">
 												<div class="input-field col s6">
-													<input id="address_line_one" type="text" class="validate">
+													<input name="address_line_one" type="text" class="validate">
 													<label for="address_line_one">Address Line 1</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_two" type="text" class="validate">
+													<input name="address_line_two" type="text" class="validate">
 													<label for="address_line_two">Address Line 2</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_three" type="text" class="validate">
+													<input name="address_line_three" type="text" class="validate">
 													<label for="address_line_three">Address Line 3</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="landmark" type="text" class="validate">
+													<input name="landmark" type="text" class="validate">
 													<label for="landmark">Landmark</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="city" type="text" class="validate">
+													<input name="city" type="text" class="validate">
 													<label for="city">City</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="state" type="text" class="validate">
+													<input name="state" type="text" class="validate">
 													<label for="state">State</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="country" type="text" class="validate">
+													<input name="country" type="text" class="validate">
 													<label for="country">Country</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="pincode" type="text" class="validate">
+													<input name="pincode" type="text" class="validate">
 													<label for="pincode">Pincode</label>
 												</div>
 											</div>
@@ -152,42 +154,42 @@
 							<div class="card-content"> <span class="card-title">Organization Details</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12" id="organization_address">
+										<form class="col s12" id="organization-address-form">
 											<div class="row">
 												<div class="input-field col s12">
-													<input id="organization_name" type="text" class="validate">
+													<input name="organization_name" type="text" class="validate">
 													<label for="organization_name">Organization Name</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_one" type="text" class="validate">
+													<input name="address_line_one" type="text" class="validate">
 													<label for="address_line_one">Address Line 1</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_two" type="text" class="validate">
+													<input name="address_line_two" type="text" class="validate">
 													<label for="address_line_two">Address Line 2</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="address_line_three" type="text" class="validate">
+													<input name="address_line_three" type="text" class="validate">
 													<label for="address_line_three">Address Line 3</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="landmark" type="text" class="validate">
+													<input name="landmark" type="text" class="validate">
 													<label for="landmark">Landmark</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="city" type="text" class="validate">
+													<input name="city" type="text" class="validate">
 													<label for="city">City</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="state" type="text" class="validate">
+													<input name="state" type="text" class="validate">
 													<label for="state">State</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="country" type="text" class="validate">
+													<input name="country" type="text" class="validate">
 													<label for="country">Country</label>
 												</div>
 												<div class="input-field col s6">
-													<input id="pincode" type="text" class="validate">
+													<input name="pincode" type="text" class="validate">
 													<label for="pincode">Pincode</label>
 												</div>
 											</div>
@@ -213,51 +215,51 @@
 						</div> -->
 					</div>
 					<div class="page pg2">
-						<div class="university-list">
-							<div class="card university-details ">
+						<div class="university-list input-data">
+							<div class="card university-details">
 								<div class="card-content"> <span class="card-title">University Details</span>
 									<div class="form-wrapper">
 										<div class="row no-margin">
-											<form class="col s12" id="organization_address">
+											<form class="col s12 university-details-form">
 												<div class="row">
 													<div class="input-field col s6">
-														<input id="name" type="text" class="validate">
+														<input name="name" type="text" class="validate">
 														<label for="name">Name</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="number_of_transcripts" type="text" class="validate">
+														<input name="number_of_transcripts" type="text" class="validate">
 														<label for="number_of_transcripts">Number of Transcripts</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="address_line_one" type="text" class="validate">
+														<input name="address_line_one" type="text" class="validate">
 														<label for="address_line_one">Address Line 1</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="address_line_two" type="text" class="validate">
+														<input name="address_line_two" type="text" class="validate">
 														<label for="address_line_two">Address Line 2</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="address_line_three" type="text" class="validate">
+														<input name="address_line_three" type="text" class="validate">
 														<label for="address_line_three">Address Line 3</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="landmark" type="text" class="validate">
+														<input name="landmark" type="text" class="validate">
 														<label for="landmark">Landmark</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="city" type="text" class="validate">
+														<input name="city" type="text" class="validate">
 														<label for="city">City</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="state" type="text" class="validate">
+														<input name="state" type="text" class="validate">
 														<label for="state">State</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="country" type="text" class="validate">
+														<input name="country" type="text" class="validate">
 														<label for="country">Country</label>
 													</div>
 													<div class="input-field col s6">
-														<input id="pincode" type="text" class="validate">
+														<input name="pincode" type="text" class="validate">
 														<label for="pincode">Pincode</label>
 													</div>
 												</div>
@@ -281,15 +283,15 @@
 											<div class="row">
 												<div class="input-field col s12">
 													<p>
-														<input type="checkbox" class="filled-in" id="" delivery_by_speed_post "  />
-														<label for=" "delivery_by_speed_post">Delivery By Speed Post</label>
+														<input type="checkbox" class="filled-in" name="delivery_by_speed_post" id="delivery_by_speed_post" value="True" />
+														<label for="delivery_by_speed_post">Delivery By Speed Post</label>
 													</p>
 												</div>
 												<div class="input-field col s6">
 													<button class="btn waves-effect waves-light  blue darken-1" id="prev-page">PREV </button>
 												</div>
 												<div class="input-field col s6">
-													<button class="btn waves-effect waves-light  blue darken-1" id="submit-transcipt">SUBMIT </button>
+													<button class="btn waves-effect waves-light  blue darken-1" id="request-transcipt-submit">SUBMIT </button>
 												</div>
 											</div>
 										</form>
@@ -299,7 +301,10 @@
 						</div>
 					</div>
 					<div class="page pg3 info-section">
-					<div class="request_id">
+					<div id="request_status">
+						<h4>Transcript request submitted successfully</h4>
+					</div>
+					<div id="request_id">
 							<h5>Request ID <span>321ed4a3-d271-4819-8db0-0216f9e00d3c</span></h5>
 							</div>
 						<div class="card">
@@ -336,7 +341,7 @@
 												<div class="input-field col s6 info-details">
 													<div class="row">
 														<p class="label col s3">Phone</p>
-														<p class="data-value col s9" id="phone">9999461407 </p>
+														<p class="data-value col s9" id="phone_number">9999461407 </p>
 													</div>
 												</div>
 												<div class="input-field col s6 info-details">
@@ -512,11 +517,11 @@
 							</div>
 						</div>
 						<div class="university-list">
-							<div class="card university-details ">
+							<div class="card university-details hidden">
 								<div class="card-content"> <span class="card-title">University Details</span>
 									<div class="form-wrapper">
 										<div class="row no-margin">
-											<form class="col s12" id="organization_address">
+											<form class="col s12 university-details-form">
 												<div class="row">
 													<div class="input-field col s6">
 														<p class="label col s3 name">Name</p>
