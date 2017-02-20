@@ -101,6 +101,7 @@ $('#sign-in').click(function(ev){
 			location.href='/profile.html'
 		},
 		error:function(response,textStatus, xhr){
+			console.log(response,textStatus,xhr);
 			handleErrorObject(response.responseJSON);
 
 		}
