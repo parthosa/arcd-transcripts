@@ -4,22 +4,16 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title></title>
-	<link rel="stylesheet" href="css/materialize.min.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="../css/materialize.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> </head>
 
 <body class=" blue lighten-5">
 	<div class="container-wrap">
 		<nav>
-			<div class="nav-wrapper blue darken-1"> <a href="profile.html" class="brand-logo">ARCD Transcripts</a>
+			<div class="nav-wrapper blue darken-1"> <a href="profile.html" class="brand-logo">ARCD Transcripts | Admin Dashboard</a>
 				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li class="tab loggedOut register"><a href="register.html">Register</a>
-					</li>
-					<li class="tab loggedOut login"><a href="index.html">Login</a>
-					</li>
-					<li class="tab loggedIn request_transcript"><a href="profile.html">Profile</a>
-					</li>
 					<li class="tab loggedIn request_transcript"><a href="request-transcript.html">Request Transcript</a>
 					</li>
 					<li class="tab loggedIn logout"><a href="index.html" onclick="window.localStorage.clear()">Logout</a>
@@ -30,7 +24,7 @@
 		<div class="container content">
 			<div class="row form-wrap">
 				<div class="content-inner-wrap col s12">
-					<div class="card">
+				<!-- 	<div class="card">
 						<div class="card-content"> <span class="card-title">Search Transcripts</span>
 							<div class="form-wrapper">
 								<div class="row no-margin flex-center">
@@ -44,14 +38,28 @@
 								</div>
 							</div>
 						</div>
+
+					</div> -->
+					<div class="row center-form page-controls">
+							<div class="input-field col s12">
+								<button class="btn waves-effect waves-light  blue darken-1" id="admin-prev-page">PREV </button>
+							</div>
+							<div class="input-field col s12">
+								<button class="btn waves-effect waves-light  blue darken-1" id="admin-next-page">NEXT </button>
+							</div>
 					</div>
 					<div id="initMessage">
-						<h4>Please Wait</h4> </div>
-					<ul class="collapsible transcript-list" data-collapsible="accordion">
-						<li class="info-section hidden">
-							<div  class="collapsible-header" >
-								<i class="material-icons">receipt</i>
-								<span id="request_id">321ed4a3-d271-4819-8db0-0216f9e00d3c</span></div>
+						<h4>Please Wait</h4>
+					 </div>
+					<ul class="collapsible transcript-list admin-list" data-collapsible="accordion">
+						<li class="info-section hidden ">
+							<div class="collapsible-header row">
+								<i class="material-icons col s1">receipt</i>
+								<div class="col s11 row admin-info-item">
+									<div id="name" class="col s5"> </div>
+									<div id="request_id" class="col s7">321ed4a3-d271-4819-8db0-0216f9e00d3c</div>
+								</div>
+							</div>
 							<div class="collapsible-body">
 								<div class="card">
 									<div class="card-content"> <span class="card-title">Basic Info</span>
@@ -59,113 +67,136 @@
 											<div class="row no-margin">
 												<form class="col s12">
 													<div class="row">
-														<div class="input-field col s12 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Username</p>
 																<p class="data-value col s9" id="username">78328176-c3d5-4819-afe1-d794520e559d </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
+															<div class="row">
+																<p class="label col s3">Request Status</p>
+																<p class="data-value col s5" id="request_status">true </p>
+																<p class="edit_register_status col s4"><i class="material-icons">mode_edit</i>Edit Status</p>
+														        <div class="col s12 request-status-wrapper">
+														          <div class="card">
+														            <div class="card-content">
+														            	<p class="label">Request Status</p>
+														            	 <div class="input-field col s12">
+																		    <select class="browser-default">
+																		      <option value="1" selected>Pending</option>
+																		      <option value="2">Payment Received</option>
+																		      <option value="3">In Process</option>
+																		      <option value="4">Dispatched</option>
+																		    </select>
+																		  </div>
+														            	<div class="button-wrapper">
+																		<a class="btn waves-effect waves-light  blue darken-1 update-request-status">UPDATE </a>
+																		<a class="btn waves-effect waves-light  blue darken-1" id="cancel-card">CANCEL </a>
+																		</div>
+														            	<p class="message"></p>
+														            </div>
+														           </div>
+														         </div>
+															      
+															</div>
+														</div>
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">First Name</p>
 																<p class="data-value col s9" id="first_name">PARTHO </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Last Name</p>
 																<p class="data-value col s9" id="last_name">SARTHI </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Email</p>
 																<p class="data-value col s9" id="email">hell.partho@gmail.com </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Phone</p>
 																<p class="data-value col s9" id="phone_number">9999461407 </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Sealed Required</p>
 																<p class="data-value col s9" id="sealed_required">Yes </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Mailing Mode</p>
 																<p class="data-value col s9" id="mailing_mode">3 </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Number of Transcripts</p>
 																<p class="data-value col s9" id="number_of_transcripts">3 </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 m6 info-details">
 															<div class="row">
 																<p class="label col s3">Cost</p>
 																<p class="data-value col s9" id="cost">3500 </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
+														<div class="input-field col s12 info-details">
 															<div class="row">
 																<p class="label col s3">Delivery By Speed Post</p>
 																<p class="data-value col s9" id="delivery_by_speed_post">true </p>
 															</div>
 														</div>
-														<div class="input-field col s6 info-details">
-															<div class="row">
-																<p class="label col s3">Request Status</p>
-																<p class="data-value col s9" id="request_status">true </p>
-															</div>
-														</div>
+														
 													</div>
 												</form>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="card mailing_card">
+								<div class="card">
 									<div class="card-content"> <span class="card-title">Mailing Address</span>
 										<div class="form-wrapper">
 											<div class="row no-margin">
 												<form class="col s12" id="mailing_address">
 													<div class="row">
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_one">Address Line 1</p>
 															<p id="address_line_one" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_two">Address Line 2</p>
 															<p id="address_line_two" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_three">Address Line 3</p>
 															<p id="address_line_three" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 landmark">Landmark</p>
 															<p id="landmark" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 city">City</p>
 															<p id="city" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 state">State</p>
 															<p id="state" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 country">Country</p>
 															<p id="country" class="data-value col s9">
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 pincode">Pincode</p>
 															<p id="pincode" class="data-value col s9">
 														</div>
@@ -175,41 +206,41 @@
 										</div>
 									</div>
 								</div>
-								<div class="card residential_card">
+								<div class="card">
 									<div class="card-content"> <span class="card-title">Residential Address</span>
 										<div class="form-wrapper">
 											<div class="row no-margin">
 												<form class="col s12" id="residential_address">
 													<div class="row">
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_one">Address Line 1</p>
 															<p id="address_line_one" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_two">Address Line 2</p>
 															<p id="address_line_two" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_three">Address Line 3</p>
 															<p id="address_line_three" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 landmark">Landmark</p>
 															<p id="landmark" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 city">City</p>
 															<p id="city" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 state">State</p>
 															<p id="state" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 country">Country</p>
 															<p id="country" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 pincode">Pincode</p>
 															<p id="pincode" type="text" class="col s9 data-value"></p>
 														</div>
@@ -219,7 +250,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="card organization_card">
+								<div class="card">
 									<div class="card-content"> <span class="card-title">Organization Details</span>
 										<div class="form-wrapper">
 											<div class="row no-margin">
@@ -229,35 +260,35 @@
 															<p class="label col s3 organization_name">Organization Name</p>
 															<p id="organization_name" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_one">Address Line 1</p>
 															<p id="address_line_one" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_two">Address Line 2</p>
 															<p id="address_line_two" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 address_line_three">Address Line 3</p>
 															<p id="address_line_three" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 landmark">Landmark</p>
 															<p id="landmark" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 city">City</p>
 															<p id="city" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 state">State</p>
 															<p id="state" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 country">Country</p>
 															<p id="country" type="text" class="col s9 data-value"></p>
 														</div>
-														<div class="input-field col s6">
+														<div class="input-field col s12 m6">
 															<p class="label col s3 pincode">Pincode</p>
 															<p id="pincode" type="text" class="col s9 data-value"></p>
 														</div>
@@ -274,43 +305,43 @@
 												<div class="row no-margin">
 													<form class="col s12 university-details-form">
 														<div class="row">
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 name">Name</p>
 																<p id="name" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 number_of_transcripts">Number of Transcripts</p>
 																<p id="number_of_transcripts" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 address_line_one">Address Line 1</p>
 																<p id="address_line_one" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 address_line_two">Address Line 2</p>
 																<p id="address_line_two" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 address_line_three">Address Line 3</p>
 																<p id="address_line_three" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 landmark">Landmark</p>
 																<p id="landmark" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 city">City</p>
 																<p id="city" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 state">State</p>
 																<p id="state" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 country">Country</p>
 																<p id="country" type="text" class="data-value col s9"></p>
 															</div>
-															<div class="input-field col s6">
+															<div class="input-field col s12 m6">
 																<p class="label col s3 pincode">Pincode</p>
 																<p id="pincode" type="text" class="data-value col s9"></p>
 															</div>
@@ -324,13 +355,14 @@
 							</div>
 						</li>
 					</ul>
+					
 				</div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="js/materialize.min.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
+	<script src="../js/materialize.min.js"></script>
+	<script type="text/javascript" src="../js/script.js"></script>
 </body>
 
 </html>
