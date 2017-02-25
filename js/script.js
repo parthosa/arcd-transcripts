@@ -204,11 +204,12 @@ $('#request-transcipt-submit').click(function(ev){
 function setTranscriptInfo(transcriptDiv,data){
 
 	transcriptDiv.find('#request_id').html(data['request_id']);
-	transcriptDiv.find('#username').html(data['user']['username']);
-	transcriptDiv.find('#name').html(data['user']['first_name']+' '+data['user']['last_name']);
-	transcriptDiv.find('#first_name').html(data['user']['first_name']);
-	transcriptDiv.find('#last_name').html(data['user']['last_name']);
-	transcriptDiv.find('#email').html(data['user']['email']);
+	transcriptDiv.find('#username').html(data['profile']['user']['username']);
+	transcriptDiv.find('#name').html(data['profile']['user']['first_name']+' '+data['profile']['user']['last_name']);
+	transcriptDiv.find('#first_name').html(data['profile']['user']['first_name']);
+	transcriptDiv.find('#last_name').html(data['profile']['user']['last_name']);
+	transcriptDiv.find('#email').html(data['profile']['user']['email']);
+	transcriptDiv.find('#id_number').html(data['profile']['id_number']);
 	transcriptDiv.find('#phone_number').html(data['phone_number']);
 	transcriptDiv.find('#sealed_required').html(data['sealed_required']);
 	transcriptDiv.find('#mailing_mode').html(mailingMode[data['mailing_mode']-1]);
@@ -217,6 +218,8 @@ function setTranscriptInfo(transcriptDiv,data){
 	transcriptDiv.find('#delivery_by_speed_post').html(data['delivery_by_speed_post']);
 	transcriptDiv.find('#number_of_transcripts').html(data['number_of_transcripts']);
 	transcriptDiv.find('#delivery_by_speed_post').html(data['delivery_by_speed_post']);
+
+	setDateTime(transcriptDiv,data['create_time']);
 
 	if(data['mailing_address']){
 		transcriptDiv.find('.mailing_card').show();
@@ -254,9 +257,11 @@ function setTranscriptInfo(transcriptDiv,data){
 
 function setAddress(subForm,data){
 
-	subForm.find('#address_line_one').html(data['address_line_one'])
-	subForm.find('#address_line_two').html(data['address_line_two'])
-	subForm.find('#address_line_three').html(data['address_line_three'])
+	var address  = data['address_line_one'] + ',<br>' + data['address_line_two'] + ',<br>' + data['address_line_three'];
+	subForm.find('#address').html(address)
+	// subForm.find('#address_line_one').html(data['address_line_one'])
+	// subForm.find('#address_line_two').html(data['address_line_two'])
+	// subForm.find('#address_line_three').html(data['address_line_three'])
 	subForm.find('#landmark').html(data['landmark'])
 	subForm.find('#city').html(data['city'])
 	subForm.find('#state').html(data['state'])
@@ -265,9 +270,29 @@ function setAddress(subForm,data){
 }
 
 
+function setDateTime(subForm,data) {
+
+	var raw_date = data.replace('T',' ').replace('Z','');
+	var dateTime = new Date(raw_date);
+	var date = dateTime.toLocaleDateString();
+	var time = dateTime.toLocaleTimeString('IST',{ hour: 'numeric',minute:'numeric', hour12: true })
+
+	subForm.find('#date').html(date);
+	subForm.find('#time').html(time);
+}
+
 
 function handleErrorObject(data,gkey=''){
-	console.log(gkey)
+	console.log(gkey);
+	if(typeof(val)=="string"){
+		var str2="",str=key;
+		$.each(str.split('_'),function(_,kv){
+			key2=kv[0].toUpperCase()+kv.slice(1)
+		    str2+=key2+" "
+		});
+		Materialize.toast(str2+" : "+val);   
+	}
+	else
 	$.each(Object.keys(data),function(_,key){
 		val=data[key];
 		if(typeof(val)=="string"){
@@ -303,6 +328,7 @@ function handleErrorObject(data,gkey=''){
 // get all transcript
 if(location.pathname.includes('all-transcript')){
 	$('.transcript-list .info-section.visible').remove();
+	$('.transcript-list').hide();
 	$.ajax({
 		method:'GET',
 		url:baseUrl + '/api/transcripts/request-transcript/',
@@ -311,10 +337,12 @@ if(location.pathname.includes('all-transcript')){
 		},
 		success:function(response){
 			$('#initMessage').hide();
-			$.each(response,function(_,data){
+			$('.transcript-list').show();
+			$.each(response,function(i,data){
 				var transcript=$('.transcript-list .info-section.hidden').clone();
 				transcript.removeClass('hidden').addClass('visible');
 				setTranscriptInfo(transcript,data);
+				transcript.find('#s_no').html(i+1);
 				$('.transcript-list').append(transcript);
 			})
 		   $('.collapsible').collapsible();
@@ -414,12 +442,22 @@ $('#admin-sign-in').click(function(ev){
 var page = 1;
 
 if(location.pathname.includes('admin/dashboard')){
-	openPage(1);	
+	if(location.hash.includes('page')){
+		page  = location.hash.substr(6);
+	}
+	openPage(page);	
 }
 
 
 function openPage(page){
+	if(page == 1)
+		$('#admin-prev-page').addClass('disabled');
+	else
+		$('#admin-prev-page').removeClass('disabled');
+
+	location.hash='page='+page;
 	$('#initMessage').show();
+	$('.transcript-list').hide();
 	$('.transcript-list .info-section.visible').remove();
 	$.ajax({
 		method:'GET',
@@ -429,10 +467,19 @@ function openPage(page){
 		},
 		success:function(response){
 			$('#initMessage').hide();
-			$.each(response,function(_,data){
+			$('.transcript-list').show();
+			if(response.length<15)
+				$('#admin-next-page').addClass('disabled');
+			else
+				$('#admin-next-page').removeClass('disabled');
+			$.each(response,function(i,data){
 				var transcript=$('.transcript-list .info-section.hidden').clone();
 				transcript.removeClass('hidden').addClass('visible');
 				setTranscriptInfo(transcript,data);
+
+				// set serial numbers
+				transcript.find('#s_no').html((i+1)+(15*(page-1)));
+
 				$('.transcript-list').append(transcript);
 			})
 		    $('select').material_select();

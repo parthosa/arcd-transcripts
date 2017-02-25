@@ -166,7 +166,12 @@ div#request-id-header {
 }
 
 
-.admin-list .collapsible-header i {
+.admin-list.content,.all-list.content{
+    width:90%;
+    margin:0 auto;
+}
+
+.transcript-list .collapsible-header i {
     margin-right: 0;
 }
 
@@ -178,10 +183,33 @@ div#request-id-header {
     margin: 0;
 }
 
-.admin-list .collapsible-header {
+
+.transcript-list{
+    display: none;
+}
+.transcript-list .collapsible-header {
     margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+
+.transcript-list p {
+    margin: 0 !important;
+    line-height: initial;
+}
+
+
+
+.transcript-list .collapsible-header p{
+    text-align:center; 
+}
+
+
+.header p {
+    font-weight: bold;
+}
 
 .page-controls {
     display: flex;
@@ -252,4 +280,8 @@ p.edit_register_status i.material-icons {
 
 .org_form,.univ_form,.mail_form{
     display: none;
+}
+
+.btn.disabled{
+    pointer-events: none;
 }
