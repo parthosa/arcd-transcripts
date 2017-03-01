@@ -15,7 +15,14 @@ var mailingMode = [
 	'Mail the transcripts to your organization address.'
 ]
 
-
+var delivery_by_speed_post = {
+	'true':'Speed Post',
+	'false':'Registered Post'
+}
+var sealed_required = {
+	'true':'Yes',
+	'false':'No'
+}
 
 if(window.localStorage.getItem('loggedIn')){
 	$('.loggedOut').hide();
@@ -211,13 +218,17 @@ function setTranscriptInfo(transcriptDiv,data){
 	transcriptDiv.find('#email').html(data['profile']['user']['email']);
 	transcriptDiv.find('#id_number').html(data['profile']['id_number']);
 	transcriptDiv.find('#phone_number').html(data['phone_number']);
-	transcriptDiv.find('#sealed_required').html(data['sealed_required']);
+	transcriptDiv.find('#sealed_required').html(sealed_required[data['sealed_required']]);
 	transcriptDiv.find('#mailing_mode').html(mailingMode[data['mailing_mode']-1]);
-	transcriptDiv.find('#cost').html(data['cost']);
+	var cost = '';
+	if(data['cost_in_dollars'])
+		cost = '$ ' + data['cost'];
+	else
+		cost = 'Rs ' + data['cost'];
+	transcriptDiv.find('#cost').html(cost);
 	transcriptDiv.find('#request_status').html(requestStatus[data['request_status']-1]);
-	transcriptDiv.find('#delivery_by_speed_post').html(data['delivery_by_speed_post']);
+	transcriptDiv.find('#delivery_by_speed_post').html(delivery_by_speed_post[data['delivery_by_speed_post']]);
 	transcriptDiv.find('#number_of_transcripts').html(data['number_of_transcripts']);
-	transcriptDiv.find('#delivery_by_speed_post').html(data['delivery_by_speed_post']);
 
 	setDateTime(transcriptDiv,data['create_time']);
 
@@ -234,12 +245,18 @@ function setTranscriptInfo(transcriptDiv,data){
 		transcriptDiv.find('form#organization_address #organization_name').html(data['organization_name']);
 	}
 	else
-		transcriptDiv.find('.organization_card').show();
+		transcriptDiv.find('.organization_card').hide();
 	
-	if(data['residential_address'])
+	if(data['residential_address']){
+		transcriptDiv.find('.residential_card').show();
 		setAddress(transcriptDiv.find('form#residential_address'),data['residential_address']);
+	}
+	else
+		transcriptDiv.find('.residential_card').hide();
 
-
+	if(data['university_details']){
+		
+		transcriptDiv.find('.university-list').show();
  	transcriptDiv.find('.university-details.visible').remove()
 	$.each(data['university_details'],function(_,university){
 
@@ -250,6 +267,9 @@ function setTranscriptInfo(transcriptDiv,data){
 		 setAddress($ele,university['address'])
 		 transcriptDiv.find('.university-list').append($ele);
 	});
+	}
+	else
+		transcriptDiv.find('.university-list').hide();
 
 }
 
@@ -561,13 +581,20 @@ $('input[name=sealed_required]').on('change',function () {
 
 
 
-$('#basic-info-form').on('change', 'select', function(){
+$('.mailing-select-wrap').on('change', 'select', function(){
 	var selectOption = $(this).val();
-	console.log(selectOption);
-	if(selectOption==2)
-			$('.univ_form').show();
+	// console.log(selectOption);
+	// if(selectOption==2)
+	// 		$('.univ_form').show();
+	if(selectOption==1)
+			$('.deliv_form').hide();
+	else
+		$('.deliv_form').show();
 		
 	if(selectOption==3)
 			$('.mail_form').show();
-	
+	else
+		$('.mail_form').hide();
+
+
  });

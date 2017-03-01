@@ -278,10 +278,16 @@ p.edit_register_status i.material-icons {
     color: #333;
 }
 
-.org_form,.univ_form,.mail_form{
+.org_form,.univ_form,.mail_form,.deliv_form{
     display: none;
 }
 
 .btn.disabled{
     pointer-events: none;
+}
+
+.mailing_form label {
+    position: relative;
+    left: 0 !important;
+    margin-right: 1em;
 }

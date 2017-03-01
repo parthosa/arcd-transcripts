@@ -173,15 +173,40 @@
 									<div class="row no-margin">
 										<form class="col s12 center-form">
 											<div class="row">
-												<div class="input-field col s6 radio">
+												<div class="input-field col s12 radio">
 													<!-- <input name="sealed_required" type="text" class="validate">
 													<label for="sealed_required">Sealed Required</label> -->
-													<p class="radio-label">Do you need transcripts in a  sealed envelope?</p>
-													<p>
+													<p class="radio-label col s6">Do you need transcripts in a  sealed envelope?</p>
+													<p class="col s6">
 														<input class="with-gap" name="sealed_required" id="sealed_required_true" type="radio" value="True"  />
 														<label for="sealed_required_true">Yes</label>
 														<input class="with-gap" name="sealed_required" id="sealed_required_false" type="radio" value="False" checked  />
 														<label for="sealed_required_false">No</label>
+													</p>
+												</div>
+												
+												<div class="input-field col s12">
+												<p class="radio-label mailing-label col s6">Mailing Mode </p>
+												<div class="mailing-select-wrap col s6">
+													<select name="mailing_mode ">
+												      <option value="" disabled selected >Choose your option</option>
+												      <option value="1">Pick up the transcripts personally</option>
+												      <option value="2">Mail the transcripts directly to the corresponding university</option>
+												      <option value="4">Mail the transcripts to your residential address</option>
+												      <option value="5">Mail the transcripts to your organization address</option>
+												      <option value="3">Mail the transcripts to a different mailing address</option>
+												    </select>
+												</div>	
+												</div>	
+												<div class="input-field col s12 radio deliv_form">
+													<!-- <input name="sealed_required" type="text" class="validate">
+													<label for="sealed_required">Sealed Required</label> -->
+													<p class="radio-label col s6">How do you want the transcripts to be delivered?</p>
+													<p class="col s6">
+														<input class="with-gap" name="delivery_by_speed_post" id="speed_post" type="radio" checked  />
+														<label for="speed_post">Speed Post</label>
+														<input class="with-gap" name="delivery_by_speed_post" id="registered_post" type="radio" />
+														<label for="registered_post">Registered Post</label>
 													</p>
 												</div>
 											</div>
@@ -190,7 +215,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="university-list input-data">
+						<div class="university-list input-data univ_form">
 							<div class="card university-details">
 								<div class="card-content"> <span class="card-title">University Details</span>
 									<div class="form-wrapper">
@@ -250,29 +275,7 @@
 								</div>
 							</div>
 						</div>					
-						<div class="card">
-							<div class="card-content">
-								<div class="form-wrapper">
-									<div class="row no-margin">
-										<form class="col s12 center-form">
-											<div class="row">
-												<div class="input-field col s12">
-													<select name="mailing_mode">
-												      <option value="" disabled selected >Choose your option</option>
-												      <option value="1">Pick up the transcripts personally</option>
-												      <option value="2">Mail the transcripts directly to the corresponding university</option>
-												      <option value="4">Mail the transcripts to your residential address</option>
-												      <option value="5">Mail the transcripts to your organization address</option>
-												      <option value="3">Mail the transcripts to a different mailing address</option>
-												    </select>
-													<label for="mailing_mode">Mailing Mode</label>
-												</div>	
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 												
 						<div class="card mail_form">
 							<div class="card-content"> <span class="card-title">Mailing Address</span>
@@ -325,12 +328,7 @@
 									<div class="row no-margin">
 										<form class="col s12 center-form">
 											<div class="row">
-												<div class="input-field col s12">
-													<p>
-														<input type="checkbox" class="filled-in" name="delivery_by_speed_post" id="delivery_by_speed_post" value="True" />
-														<label for="delivery_by_speed_post">Delivery By Speed Post</label>
-													</p>
-												</div>
+									
 												<!-- <div class="input-field col s6">
 													<button class="btn waves-effect waves-light  blue darken-1" id="prev-page">PREV </button>
 												</div> -->
@@ -416,7 +414,7 @@
 												</div>
 												<div class="input-field col s6 info-details">
 													<div class="row">
-														<p class="label col s3">Delivery By Speed Post</p>
+														<p class="label col s3">Delivery</p>
 														<p class="data-value col s9" id="delivery_by_speed_post">true </p>
 													</div>
 												</div>
