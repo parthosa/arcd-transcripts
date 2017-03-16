@@ -15,6 +15,7 @@ var mailingMode = [
 	'Mail the transcripts to your organization address.'
 ]
 
+
 var delivery_by_speed_post = {
 	'true':'Speed Post',
 	'false':'Registered Post'
@@ -24,16 +25,34 @@ var sealed_required = {
 	'false':'No'
 }
 
-if(window.localStorage.getItem('loggedIn')){
-	$('.loggedOut').hide();
-	$('.loggedIn').show();
-	// if(location.href.includes('index')||location.href.includes('register'))
-	// 	location.href="/profile.html"
-}else{
-	// if(!location.href.includes('index')&&!location.href.includes('register'))
-	// 	location.href="/index.html"
+
+// pages redirection based on login 
+function pageRedirection(){
+
+	if(window.localStorage.getItem('logged_in')){
+		
+		$('.loggedOut').hide();
+		$('.loggedIn').show();
+		if(window.localStorage.getItem('admin_logged_in'))
+		if(location.pathname.includes('index')||location.pathname.includes('register')||location.pathname=='/')
+			location.pathname="/profile.html";
+		if(location.pathname=="/admin/")
+			location.pathname="/admin/dashboard.html";
+
+	}else{
+
+		if(!location.pathname.includes('index')&&!location.pathname.includes('register')&&!(location.pathname=='/')&&!(location.pathname=='/admin/')){
+			location.hash='';
+			if(location.pathname.includes('admin'))
+				location.pathname="/admin/";
+			else
+				location.pathname="/";
+		}
+	}
 }
 
+
+window.onload = pageRedirection;
 
 $('#next-page').click(function (ev) {
 	ev.preventDefault();
@@ -104,7 +123,7 @@ $('#sign-in').click(function(ev){
 		data:data,
 		success:function(response,textStatus, xhr){
 			window.localStorage.setItem('token',response.token)
-			window.localStorage.setItem('loggedIn',true)
+			window.localStorage.setItem('logged_in',true)
 			location.href='/profile.html'
 		},
 		error:function(response,textStatus, xhr){
@@ -302,7 +321,9 @@ function setDateTime(subForm,data) {
 }
 
 
-function handleErrorObject(data,gkey=''){
+function handleErrorObject(data,gkey){
+	if(!gkey)
+		gkey='';
 	console.log(gkey);
 	if(typeof(val)=="string"){
 		var str2="",str=key;
@@ -447,7 +468,8 @@ $('#admin-sign-in').click(function(ev){
 		data:data,
 		success:function(response,textStatus, xhr){
 			window.localStorage.setItem('token',response.token)
-			window.localStorage.setItem('loggedIn',true)
+			window.localStorage.setItem('logged_in',true);
+			window.localStorage.setItem('admin_logged_in',true)
 			location.href='/admin/dashboard.html'
 		},
 		error:function(response,textStatus, xhr){
@@ -563,10 +585,14 @@ $(document).on('click','.update-request-status',function(){
 
 
 $('input[name=org_field]').on('change',function () {
-	if($(this).val()=="True")
+	if($(this).val()=="True"){
+		$('.mailing-select-wrap ul li:nth-of-type(5)').show();
 		$('.org_form').show();
-	else
+	}
+	else{
+		$('.mailing-select-wrap ul li:nth-of-type(5)').hide();
 		$('.org_form').hide();
+	}
 
 })
 
@@ -577,7 +603,6 @@ $('input[name=sealed_required]').on('change',function () {
 		$('.univ_form').hide();
 
 })
-
 
 
 
