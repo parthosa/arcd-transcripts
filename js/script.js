@@ -15,6 +15,9 @@ var mailingMode = [
 	'Mail the transcripts to your organization address.'
 ]
 
+var mailing = false;
+var organization = false;
+var university = false;
 
 var delivery_by_speed_post = {
 	'true':'Speed Post',
@@ -28,21 +31,22 @@ var sealed_required = {
 
 // pages redirection based on login 
 function pageRedirection(){
-
+	location.hash='';
 	if(window.localStorage.getItem('logged_in')){
 		
 		$('.loggedOut').hide();
 		$('.loggedIn').show();
-		if(window.localStorage.getItem('admin_logged_in'))
+		if(!window.localStorage.getItem('admin_logged_in')&&location.pathname.includes('admin')&&!(location.pathname=='/admin/'))
+			location.pathname="/admin/";
 		if(location.pathname.includes('index')||location.pathname.includes('register')||location.pathname=='/')
 			location.pathname="/profile.html";
-		if(location.pathname=="/admin/")
+		if(location.pathname=="/admin/"&&window.localStorage.getItem('admin_logged_in'))
 			location.pathname="/admin/dashboard.html";
 
 	}else{
 
 		if(!location.pathname.includes('index')&&!location.pathname.includes('register')&&!(location.pathname=='/')&&!(location.pathname=='/admin/')){
-			location.hash='';
+			
 			if(location.pathname.includes('admin'))
 				location.pathname="/admin/";
 			else
@@ -171,6 +175,7 @@ $('#request-transcipt-submit').click(function(ev){
 		else
 		basicInfo[kv.name] = kv.value;
 	});
+
 	$.each($('#mailing-address-form').serializeArray(), function(_, kv) {
 		mailing_address[kv.name] = kv.value;
 	});
@@ -196,12 +201,21 @@ $('#request-transcipt-submit').click(function(ev){
 	});
 
 	data = basicInfo;
-	data['mailing_address'] = mailing_address;
+	data['sealed_required'] = $('input[name=sealed_required]:checked').val();
+
+	if(mailing)
+		data['mailing_address'] = mailing_address;
+
 	data['residential_address'] = residential_address;
-	data['organization_address'] = organization_address;
-	data['organization_name'] = $('input[name=organization_name]').val();
+
+	if(organization){
+		data['organization_address'] = organization_address;
+		data['organization_name'] = $('input[name=organization_name]').val();
+	}
+
 	data['delivery_by_speed_post'] = delivery_by_speed_post;
-	data['university_details'] = university_details;
+	if(university)
+		data['university_details'] = university_details;
     $('.toast').remove()
 	$.ajax({
 		method:'POST',
@@ -588,19 +602,25 @@ $('input[name=org_field]').on('change',function () {
 	if($(this).val()=="True"){
 		$('.mailing-select-wrap ul li:nth-of-type(5)').show();
 		$('.org_form').show();
+		organization = true;
 	}
 	else{
 		$('.mailing-select-wrap ul li:nth-of-type(5)').hide();
 		$('.org_form').hide();
+		organization = false;
 	}
 
 })
 
 $('input[name=sealed_required]').on('change',function () {
-	if($(this).val()=="True")
+	if($(this).val()=="True"){
 		$('.univ_form').show();
-	else
+		university = true;
+	}
+	else{
 		$('.univ_form').hide();
+		university = false;
+	}
 
 })
 
@@ -612,14 +632,18 @@ $('.mailing-select-wrap').on('change', 'select', function(){
 	// if(selectOption==2)
 	// 		$('.univ_form').show();
 	if(selectOption==1)
-			$('.deliv_form').hide();
+		$('.deliv_form').hide();
 	else
 		$('.deliv_form').show();
 		
-	if(selectOption==3)
-			$('.mail_form').show();
-	else
+	if(selectOption==3){
+		$('.mail_form').show();
+		mailing = true;
+	}
+	else{
 		$('.mail_form').hide();
+		mailing = false;
+	}
 
 
  });
