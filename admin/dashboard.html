@@ -44,10 +44,36 @@
 							<div class="form-wrapper">
 								<div class="row no-margin flex-center">
 									<form class="col s12">
-										<div class="row no-margin flex-center">
-											<div class="col m10">
-												<input id="search-transcript-field" type="text" placeholder="Request ID"> </div>
-											<div class="col m2"> <a class="waves-effect waves-light btn blue darken-1" id="search-transcript-btn">SEARCH</a> </div>
+										<div class="row">
+											<div class="filter-wrap col s12 row">
+											<div class="col s3 filter_type_wrap">
+												<select name="filter_type">
+												      <option value="" disabled selected >FILTER TYPE</option>
+												      <option value="1">Request Status</option>
+												      <option value="2">ID Number</option>
+												      <option value="3">Date</option>
+												      <option value="4">First Name</option>
+												      <option value="5">Last Name</option>
+												      <option value="6">Request ID</option>
+											    </select>
+											 </div>
+											 <div class="col s7" id="filter-value-wrap">
+												<input class="filter-value" type="text" placeholder="Search Query">
+												<div class="filter-select-wrap">
+												<select class="filter-value">
+													 <option value="" disabled selected >Select Request Status</option>
+												      <option value="1">Pending</option>
+												      <option value="2">Payment Received</option>
+												      <option value="3">In Process</option>
+												      <option value="4">Dispatched</option>
+												</select>
+												</div>
+											 </div>
+											<div class="col s2"> 
+											  <a class="waves-effect waves-light btn blue darken-1" id="filter-transcript-btn">FILTER</a> 
+											  </div>
+										  </div>
+		
 										</div>
 									</form>
 								</div>

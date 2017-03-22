@@ -303,3 +303,7 @@ p.edit_register_status i.material-icons {
     line-height: 1.6em;
     margin: 1em;
 }
+
+.filter-select-wrap{
+    display: none;
+}

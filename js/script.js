@@ -18,6 +18,8 @@ var mailingMode = [
 var mailing = false;
 var organization = false;
 var university = false;
+var filter_value  = '';
+var filter_type = '';
 
 var delivery_by_speed_post = {
 	'true':'Speed Post',
@@ -464,29 +466,6 @@ $('#search-transcript-btn').click(function(ev){
 
 })
 
-$('#search-transcript-field').on('change',function(){
-	if($(this).val()==''){
-		$('.transcript-list .info-section.visible').remove();
-	$('.toast').remove()
-	
-	$.ajax({
-		method:'GET',
-		url:baseUrl + '/api/transcripts/request-transcript/',
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader("Authorization", 'JWT '+window.localStorage.getItem('token'));
-		},
-		success:function(response){
-			$('#initMessage').hide();
-			$.each(response,function(_,data){
-				var transcript=$('.transcript-list .info-section.hidden').clone();
-				transcript.removeClass('hidden').addClass('visible');
-				setTranscriptInfo(transcript,data);
-				$('.transcript-list').append(transcript);
-			})
-		}
-	});
-	}
-})
 
 
 
@@ -539,6 +518,15 @@ if(location.pathname.includes('admin/dashboard')){
 
 
 function openPage(page){
+
+	var url;
+	console.log(filter_value);
+	if(filter_value==''){
+	url	= baseUrl + '/api/transcripts/admin-transcripts/?page='+page;
+	}
+	else{
+	url = baseUrl + '/api/transcripts/admin-transcripts-filter/'+filter_type+'/'+filter_value+'/?page='+page;
+	}
 	if(page == 1)
 		$('#admin-prev-page').addClass('disabled');
 	else
@@ -550,7 +538,7 @@ function openPage(page){
 	$('.transcript-list .info-section.visible').remove();
 	$.ajax({
 		method:'GET',
-		url:baseUrl + '/api/transcripts/admin-transcripts/?page='+page,
+		url:url,
 		beforeSend : function(xhr) {
 			xhr.setRequestHeader("Authorization", 'JWT '+window.localStorage.getItem('token'));
 		},
@@ -680,3 +668,36 @@ $('.mailing-select-wrap').on('change', 'select', function(){
 
 
  });
+
+
+
+$('#filter-value-wrap').on('change','select.filter-value,input.filter-value',function (ev) {
+	filter_value = $(this).val();
+	console.log(filter_value);
+});
+
+$('#filter-transcript-btn').click(function (ev) {
+	ev.preventDefault();
+	filter_type = $('select[name=filter_type]').val();
+	openPage(1);
+})
+
+$('.filter_type_wrap').on('change','select[name=filter_type]',function(){
+	var selectOption = $(this).val();
+	$('input.filter-value').val('');
+	if(selectOption == 1){
+		$('.filter-select-wrap').show();
+		$('select').material_select();
+		$('input.filter-value').hide();
+	}else{
+		$('.filter-select-wrap').hide();
+		$('input.filter-value').show();
+	}
+
+	if(selectOption == 3){
+		$('input.filter-value').attr('placeholder','YYYY-MM-DD');
+	}
+	else{
+		$('input.filter-value').attr('placeholder','Search Query');
+	}
+});
