@@ -139,14 +139,14 @@ $('#sign-in').click(function(ev){
 		data:data,
 		success:function(response,textStatus, xhr){
 			$this.removeClass('disabled');
-			$this.html('SIGN UP');
+			$this.html('SIGN IN');
 			window.localStorage.setItem('token',response.token)
 			window.localStorage.setItem('logged_in',true)
 			location.href='/profile.html'
 		},
 		error:function(response,textStatus, xhr){
 			$this.removeClass('disabled');
-			$this.html('SIGN UP');
+			$this.html('SIGN IN');
 			console.log(response,textStatus,xhr);
 			handleErrorObject(response.responseJSON);
 
@@ -177,6 +177,9 @@ if(location.pathname.includes('profile')){
 
 //request transcript
 $('#request-transcipt-submit').click(function(ev){
+	var $this = $(this);
+	$this.addClass('disabled');
+	$this.html('Please Wait');
 	ev.preventDefault();
 	data = {};
 	basicInfo={};
@@ -219,6 +222,8 @@ $('#request-transcipt-submit').click(function(ev){
 	data = basicInfo;
 	data['sealed_required'] = $('input[name=sealed_required]:checked').val();
 
+	data['mailing_mode'] = parseInt($('select[name=mailing_mode]').val());
+
 	if(mailing)
 		data['mailing_address'] = mailing_address;
 
@@ -244,11 +249,15 @@ $('#request-transcipt-submit').click(function(ev){
 		processData: false,
 		dataType:'json',
 		success:function(response){
+			$this.removeClass('disabled');
+			$this.html('SUBMIT');
 			$('.page').hide();
 			$('.pg3').show();
 			setTranscriptInfo($('.pg3.info-section'),response)
 		},
 		error:function(response){
+			$this.removeClass('disabled');
+			$this.html('SUBMIT');
 			handleErrorObject(response.responseJSON);
 		}
 	});
@@ -485,6 +494,9 @@ $('#search-transcript-field').on('change',function(){
 // admin login
 
 $('#admin-sign-in').click(function(ev){
+	var $this = $(this);
+	$this.addClass('disabled');
+	$this.html('Please Wait');
 	ev.preventDefault();
 	data={}
 	$.each($('#admin-login-form').serializeArray(), function(_, kv) {
@@ -497,12 +509,17 @@ $('#admin-sign-in').click(function(ev){
 		url:baseUrl+'/api/profiles/admin-login/',
 		data:data,
 		success:function(response,textStatus, xhr){
+			$this.removeClass('disabled');
+			$this.html('SIGN IN');
+
 			window.localStorage.setItem('token',response.token)
 			window.localStorage.setItem('logged_in',true);
 			window.localStorage.setItem('admin_logged_in',true)
 			location.href='/admin/dashboard.html'
 		},
 		error:function(response,textStatus, xhr){
+			$this.removeClass('disabled');
+			$this.html('SIGN IN');
 			handleErrorObject(response.responseJSON);
 
 		}
