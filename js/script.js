@@ -180,6 +180,7 @@ if(location.pathname.includes('profile')){
 //request transcript
 $('#request-transcipt-submit').click(function(ev){
 	var $this = $(this);
+	var univ_number_of_transcripts = 0;
 	$this.addClass('disabled');
 	$this.html('Please Wait');
 	ev.preventDefault();
@@ -207,8 +208,8 @@ $('#request-transcipt-submit').click(function(ev){
 		organization_address[kv.name] = kv.value;
 	});
 	$.each($('.university-list.input-data form.university-details-form'),function(_, kv) {
-		data = {}   
-		address  = {}
+		data = {} ; 
+		address  = {};
 		$.each($(kv).serializeArray(),function(_,key){
 			if(key.name!='name'&&key.name!='number_of_transcripts')
 			{	console.log(key.name,key.value)
@@ -216,7 +217,7 @@ $('#request-transcipt-submit').click(function(ev){
 			}else
 				data[key.name] = key.value;   
 		});
-		console.log(address)
+		univ_number_of_transcripts += parseInt(data['number_of_transcripts']);
 		data['address'] = address;
 		university_details.push(data);
 	});
@@ -239,30 +240,38 @@ $('#request-transcipt-submit').click(function(ev){
 	data['delivery_by_speed_post'] = delivery_by_speed_post;
 	if(university)
 		data['university_details'] = university_details;
-    $('.toast').remove()
-	$.ajax({
-		method:'POST',
-		url:baseUrl + '/api/transcripts/request-transcript/',
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader("Authorization", 'JWT '+window.localStorage.getItem('token'));
-			xhr.setRequestHeader("Content-Type", 'application/json');
-		},
-		data:JSON.stringify(data),
-		processData: false,
-		dataType:'json',
-		success:function(response){
-			$this.removeClass('disabled');
-			$this.html('SUBMIT');
-			$('.page').hide();
-			$('.pg3').show();
-			setTranscriptInfo($('.pg3.info-section'),response)
-		},
-		error:function(response){
-			$this.removeClass('disabled');
-			$this.html('SUBMIT');
-			handleErrorObject(response.responseJSON);
-		}
-	});
+    $('.toast').remove();
+
+    if(university && data['number_of_transcripts']!=univ_number_of_transcripts){
+    	Materialize.toast('Total number of transcripts do not match');   
+    	$this.removeClass('disabled');
+		$this.html('SUBMIT');
+    }
+    else{
+		$.ajax({
+			method:'POST',
+			url:baseUrl + '/api/transcripts/request-transcript/',
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader("Authorization", 'JWT '+window.localStorage.getItem('token'));
+				xhr.setRequestHeader("Content-Type", 'application/json');
+			},
+			data:JSON.stringify(data),
+			processData: false,
+			dataType:'json',
+			success:function(response){
+				$this.removeClass('disabled');
+				$this.html('SUBMIT');
+				$('.page').hide();
+				$('.pg3').show();
+				setTranscriptInfo($('.pg3.info-section'),response)
+			},
+			error:function(response){
+				$this.removeClass('disabled');
+				$this.html('SUBMIT');
+				handleErrorObject(response.responseJSON);
+			}
+		});
+	}
 
 });
 
@@ -673,7 +682,6 @@ $('.mailing-select-wrap').on('change', 'select', function(){
 
 $('#filter-value-wrap').on('change','select.filter-value,input.filter-value',function (ev) {
 	filter_value = $(this).val();
-	console.log(filter_value);
 });
 
 $('#filter-transcript-btn').click(function (ev) {
