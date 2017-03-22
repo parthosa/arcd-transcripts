@@ -291,3 +291,15 @@ p.edit_register_status i.material-icons {
     left: 0 !important;
     margin-right: 1em;
 }
+
+
+/*register */
+.success-reg-wrapper{
+    display: none;
+}
+
+.success-reg-message {
+    font-size: 1.2rem;
+    line-height: 1.6em;
+    margin: 1em;
+}

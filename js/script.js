@@ -90,6 +90,9 @@ baseUrl="http://arcd-transcripts.n93jg2wswv.ap-south-1.elasticbeanstalk.com"
 
 // registeration
 $('#sign-up').click(function(ev){
+	var $this = $(this);
+	$this.addClass('disabled');
+	$this.html('Please Wait');
 	ev.preventDefault();
 	data={}
 	$.each($('#register-form').serializeArray(), function(_, kv) {
@@ -103,10 +106,16 @@ $('#sign-up').click(function(ev){
 		data:data,
 		success:function(response,textStatus, xhr){
 			if(xhr.status == 201){
-				alert('Registration Successfull. Please verify your email')
+				$this.removeClass('disabled');
+				$this.html('SIGN UP');
+				$('.reg-form-wrap').hide();
+				$('.success-reg-wrapper').show();
+				$('.success-reg-message').html('Registration Successfull.<br> Please verify your Email Address<br><br>Already Verified? <a href="/index.html">Login</a>');
 			}
 		},
 		error:function(response){
+			$this.removeClass('disabled');
+			$this.html('SIGN UP');
 			handleErrorObject(response.responseJSON);
 		}
 	})
@@ -114,6 +123,9 @@ $('#sign-up').click(function(ev){
 
 // login
 $('#sign-in').click(function(ev){
+	var $this = $(this);
+	$this.addClass('disabled');
+	$this.html('Please Wait');
 	ev.preventDefault();
 	data={}
 	$.each($('#login-form').serializeArray(), function(_, kv) {
@@ -126,11 +138,15 @@ $('#sign-in').click(function(ev){
 		url:baseUrl+'/api/profiles/login/',
 		data:data,
 		success:function(response,textStatus, xhr){
+			$this.removeClass('disabled');
+			$this.html('SIGN UP');
 			window.localStorage.setItem('token',response.token)
 			window.localStorage.setItem('logged_in',true)
 			location.href='/profile.html'
 		},
 		error:function(response,textStatus, xhr){
+			$this.removeClass('disabled');
+			$this.html('SIGN UP');
 			console.log(response,textStatus,xhr);
 			handleErrorObject(response.responseJSON);
 
@@ -310,16 +326,16 @@ function setTranscriptInfo(transcriptDiv,data){
 
 function setAddress(subForm,data){
 
-	var address  = data['address_line_one'] + ',<br>' + data['address_line_two'] + ',<br>' + data['address_line_three'];
-	subForm.find('#address').html(address)
+	var address  = data['address_line_one'] + '<br>' + (data['address_line_two']==''?'':data['address_line_two']+'<br>') + (data['address_line_three']==''?'':data['address_line_three']+'<br>') + (data['landmark']==''?'':data['landmark']+'<br>') + data['city'] + '<br>'+ data['state'] + ' - '+data['pincode']+'<br>'+ data['country']; 
 	// subForm.find('#address_line_one').html(data['address_line_one'])
 	// subForm.find('#address_line_two').html(data['address_line_two'])
 	// subForm.find('#address_line_three').html(data['address_line_three'])
-	subForm.find('#landmark').html(data['landmark'])
-	subForm.find('#city').html(data['city'])
-	subForm.find('#state').html(data['state'])
-	subForm.find('#country').html(data['country'])
-	subForm.find('#pincode').html(data['pincode'])
+	// subForm.find('#landmark').html(data['landmark'])
+	// subForm.find('#city').html(data['city'])
+	// subForm.find('#state').html(data['state'])
+	// subForm.find('#country').html(data['country'])
+	// subForm.find('#pincode').html(data['pincode'])
+	 subForm.find('#address').html(address);
 }
 
 
