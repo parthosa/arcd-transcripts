@@ -21,11 +21,11 @@ var university = false;
 var filter_value  = '';
 var filter_type = '';
 
-var delivery_by_speed_post = {
+var deliveryBySpeedPost = {
 	'true':'Speed Post',
 	'false':'Registered Post'
 }
-var sealed_required = {
+var sealedRequired = {
 	'true':'Yes',
 	'false':'No'
 }
@@ -78,7 +78,8 @@ $(document).on('click','.add_university',function(){
 	$(this).closest('.univ-modify').find('.remove_univ').show().css({
 		'display':'flex'
 	});
-	ele.find('input').val('');
+	ele.find('input').val('').removeClass('invalid');
+	ele.find('label').removeClass('active');
 	console.log(1,ele);
 	$('.university-list.input-data').append(ele)
 })
@@ -118,7 +119,7 @@ $('#sign-up').click(function(ev){
 		error:function(response){
 			$this.removeClass('disabled');
 			$this.html('SIGN UP');
-			handleErrorObject(response.responseJSON);
+			handleError(response.responseJSON);
 		}
 	})
 })
@@ -150,7 +151,7 @@ $('#sign-in').click(function(ev){
 			$this.removeClass('disabled');
 			$this.html('SIGN IN');
 			console.log(response,textStatus,xhr);
-			handleErrorObject(response.responseJSON);
+			handleError(response.responseJSON);
 
 		}
 	})
@@ -184,13 +185,13 @@ $('#request-transcipt-submit').click(function(ev){
 	$this.addClass('disabled');
 	$this.html('Please Wait');
 	ev.preventDefault();
-	data = {};
-	basicInfo={};
-	mailing_address={};
-	residential_address={};
-	organization_address={};
-	delivery_by_speed_post=$('input[name=delivery_by_speed_post]')[0].checked
-	university_details= [];
+	var data = {};
+	var basicInfo={};
+	var mailing_address={};
+	var residential_address={};
+	var organization_address={};
+	var delivery_by_speed_post=$('input[name=delivery_by_speed_post]')[0].checked
+	var university_details= [];
 	$.each($('#basic-info-form').serializeArray(), function(_, kv) {
 		if(kv.name == "mailing_mode")
 		basicInfo[kv.name] = parseInt(kv.value);
@@ -198,13 +199,13 @@ $('#request-transcipt-submit').click(function(ev){
 		basicInfo[kv.name] = kv.value;
 	});
 
-	$.each($('#mailing-address-form').serializeArray(), function(_, kv) {
+	$.each($('#mailing_address_form').serializeArray(), function(_, kv) {
 		mailing_address[kv.name] = kv.value;
 	});
-	$.each($('#residential-address-form').serializeArray(), function(_, kv) {
+	$.each($('#residential_address_form').serializeArray(), function(_, kv) {
 		residential_address[kv.name] = kv.value;
 	});
-	$.each($('#organization-address-form').serializeArray(), function(_, kv) {
+	$.each($('#organization_address_form').serializeArray(), function(_, kv) {
 		organization_address[kv.name] = kv.value;
 	});
 	$.each($('.university-list.input-data form.university-details-form'),function(_, kv) {
@@ -268,7 +269,7 @@ $('#request-transcipt-submit').click(function(ev){
 			error:function(response){
 				$this.removeClass('disabled');
 				$this.html('SUBMIT');
-				handleErrorObject(response.responseJSON);
+				handleError(response.responseJSON);
 			}
 		});
 	}
@@ -287,7 +288,7 @@ function setTranscriptInfo(transcriptDiv,data){
 	transcriptDiv.find('#email').html(data['profile']['user']['email']);
 	transcriptDiv.find('#id_number').html(data['profile']['id_number']);
 	transcriptDiv.find('#phone_number').html(data['phone_number']);
-	transcriptDiv.find('#sealed_required').html(sealed_required[data['sealed_required']]);
+	transcriptDiv.find('#sealed_required').html(sealedRequired[data['sealed_required']]);
 	transcriptDiv.find('#mailing_mode').html(mailingMode[data['mailing_mode']-1]);
 	var cost = '';
 	if(data['cost_in_dollars'])
@@ -295,8 +296,9 @@ function setTranscriptInfo(transcriptDiv,data){
 	else
 		cost = 'Rs ' + data['cost'];
 	transcriptDiv.find('#cost').html(cost);
+	console.log(transcriptDiv.find('#request_status'));
 	transcriptDiv.find('#request_status').html(requestStatus[data['request_status']-1]);
-	transcriptDiv.find('#delivery_by_speed_post').html(delivery_by_speed_post[data['delivery_by_speed_post']]);
+	transcriptDiv.find('#delivery_by_speed_post').html(deliveryBySpeedPost[data['delivery_by_speed_post']]);
 	transcriptDiv.find('#number_of_transcripts').html(data['number_of_transcripts']);
 
 	setDateTime(transcriptDiv,data['create_time']);
@@ -347,14 +349,6 @@ function setTranscriptInfo(transcriptDiv,data){
 function setAddress(subForm,data){
 
 	var address  = data['address_line_one'] + '<br>' + (data['address_line_two']==''?'':data['address_line_two']+'<br>') + (data['address_line_three']==''?'':data['address_line_three']+'<br>') + (data['landmark']==''?'':data['landmark']+'<br>') + data['city'] + '<br>'+ data['state'] + ' - '+data['pincode']+'<br>'+ data['country']; 
-	// subForm.find('#address_line_one').html(data['address_line_one'])
-	// subForm.find('#address_line_two').html(data['address_line_two'])
-	// subForm.find('#address_line_three').html(data['address_line_three'])
-	// subForm.find('#landmark').html(data['landmark'])
-	// subForm.find('#city').html(data['city'])
-	// subForm.find('#state').html(data['state'])
-	// subForm.find('#country').html(data['country'])
-	// subForm.find('#pincode').html(data['pincode'])
 	 subForm.find('#address').html(address);
 }
 
@@ -371,49 +365,60 @@ function setDateTime(subForm,data) {
 }
 
 
-function handleErrorObject(data,gkey){
-	if(!gkey)
-		gkey='';
-	console.log(gkey);
-	if(typeof(val)=="string"){
-		var str2="",str=key;
-		$.each(str.split('_'),function(_,kv){
-			key2=kv[0].toUpperCase()+kv.slice(1)
-		    str2+=key2+" "
-		});
-		Materialize.toast(str2+" : "+val);   
+function handleError(data){
+	if($.isPlainObject(data)){
+		for(key in data){
+			if(Array.isArray(data[key])){
+				data[key].forEach(function (ele,index) {
+					if($.isPlainObject(ele)){
+						for(key2 in ele){
+							if(Array.isArray(ele[key2])){
+								ele[key2].forEach(function (err_msg) {
+									selector = '.university-details:nth-of-type('+(index+1)+'):not(.hidden) input[name='+key2+']';
+									showErrMessage(selector,err_msg);
+								})
+							}
+							else if($.isPlainObject(ele[key2])){
+								for(key3 in ele[key2]){
+									if(Array.isArray(ele[key2][key3])){
+										ele[key2][key3].forEach(function (err_msg) {
+											selector = '.university-details:nth-of-type('+(index+1)+'):not(.hidden) input[name='+key3+']';
+											showErrMessage(selector,err_msg);
+										})
+									}
+								}
+							}
+						}
+					}
+					else{
+						selector = '#basic-info-form input[name='+key+'],#additional-info input[name='+key+']';
+						showErrMessage(selector,ele);
+					}
+				});
+			}
+			else if($.isPlainObject(data[key])){
+				for(key2 in data[key]){
+					if(Array.isArray(data[key][key2])){
+						data[key][key2].forEach(function(err_msg){
+							selector = '#'+key+'_form input[name='+key2+']';
+							showErrMessage(selector,err_msg);
+						})
+					}
+				}
+			}
+			else if(typeof(data[key]) == 'string'){
+				Materialize.toast(data[key]);
+			}
+		}
 	}
-	else
-	$.each(Object.keys(data),function(_,key){
-		val=data[key];
-		if(typeof(val)=="string"){
-			var str2="",str=key;
-			$.each(str.split('_'),function(_,kv){
-				key2=kv[0].toUpperCase()+kv.slice(1)
-			    str2+=key2+" "
-			});
-			Materialize.toast(str2+" : "+val);   
-		}
-	    else if(Array.isArray(val))
-			$.each(val,function(_,k){
-				if(typeof(k)=="object"){
-					gkey+=' '+k
-					handleErrorObject(k);
-				}
-				else{
-					var str2="",str=key;
-					$.each(str.split('_'),function(_,kv){
-						key2=kv[0].toUpperCase()+kv.slice(1)
-					    str2+=key2+" "
-					});
-		    		Materialize.toast(str2+" : "+k);    
-				}
-			});
-		else if(typeof(val)=="object"){
-	    		gkey+=' '+key
-				handleErrorObject(val,gkey);
-		}
-	});
+}
+
+
+function showErrMessage(selector,message){
+	$(selector).next("label").attr('data-error',message);
+	$(selector).next("label").addClass('active');
+	$(selector).removeClass("valid");
+	$(selector).addClass("invalid");
 }
 
 // get all transcript
@@ -468,7 +473,7 @@ $('#search-transcript-btn').click(function(ev){
 			$('.transcript-list').append(transcript);
 		},
 		error:function(response){
-			handleErrorObject(response.responseJSON)
+			handleError(response.responseJSON)
 		}
 	});
 	}
@@ -508,7 +513,7 @@ $('#admin-sign-in').click(function(ev){
 		error:function(response,textStatus, xhr){
 			$this.removeClass('disabled');
 			$this.html('SIGN IN');
-			handleErrorObject(response.responseJSON);
+			handleError(response.responseJSON);
 
 		}
 	})

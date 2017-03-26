@@ -1,4 +1,4 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -50,7 +50,7 @@ f<!DOCTYPE html>
 												</div>
 												<div class="input-field col s6">
 													<input name="number_of_transcripts" type="text" class="validate">
-													<label for="number_of_transcripts">Number of Transcripts</label>
+													<label for="number_of_transcripts" data-error="Invalid">Number of Transcripts</label>
 												</div>
 												
 												
@@ -65,7 +65,7 @@ f<!DOCTYPE html>
 							<div class="card-content"> <span class="card-title">Residential Address</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12" id="residential-address-form">
+										<form class="col s12" id="residential_address_form">
 											<div class="row">
 												<div class="input-field col s6">
 													<input name="address_line_one" type="text" class="validate">
@@ -109,7 +109,7 @@ f<!DOCTYPE html>
 							<div class="card-content"> <span class="card-title">Organization Details</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12" id="organization-address-form">
+										<form class="col s12" id="organization_address_form">
 											<div class="row">
 											<div class="input-field col s12 radio" id="org_check">
 													<!-- <input name="sealed_required" type="text" class="validate">
@@ -171,7 +171,7 @@ f<!DOCTYPE html>
 							<span class="card-title">Additional Info</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12 center-form">
+										<form class="col s12 center-form" id="additional-info">
 											<div class="row">
 												<div class="input-field col s12 radio">
 													<!-- <input name="sealed_required" type="text" class="validate">
@@ -281,7 +281,7 @@ f<!DOCTYPE html>
 							<div class="card-content"> <span class="card-title">Mailing Address</span>
 								<div class="form-wrapper">
 									<div class="row no-margin">
-										<form class="col s12" id="mailing-address-form">
+										<form class="col s12" id="mailing_address_form">
 											<div class="row">
 												<div class="input-field col s6">
 													<input name="address_line_one" type="text" class="validate">
@@ -343,7 +343,7 @@ f<!DOCTYPE html>
 						</div>
 					</div>
 					<div class="page pg3 info-section">
-					<div id="request_status">
+					<div id="request-head">
 						<h4>Transcript request submitted successfully</h4>
 					</div>
 					<div id="request-id-header">
